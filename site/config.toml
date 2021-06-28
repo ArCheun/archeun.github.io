@@ -1,4 +1,4 @@
-baseURL = "https://archeun.com"
+baseURL = "https://archeun.github.io/"
 languageCode = "en-us"
 title = "archeun"
 theme = "cactus"
