@@ -1,0 +1,6 @@
+baseURL = "https://archeun.com"
+languageCode = "en-us"
+title = "archeun"
+theme = "cactus"
+Params = {logo = 'img/logo.png', favicon = 'img/favicon.png'}
+Menus = {main = [{Name = 'HOME', URL = '/'}, {Name = 'POSTS', URL = '/posts'}, {Name = 'ABOUT', URL = '/'}]}
