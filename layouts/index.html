@@ -1,0 +1,28 @@
+{{ define "main" }}
+{{ partial "header" . }}
+
+<section id="about">
+    <div class="container">
+
+        <div class="avatar mb-5">
+            <img src="{{ .Site.Params.avatar }}" alt="Responsive image">
+        </div>
+
+        <h1 style="font-size: xxx-large">Productivity tools for collaborative teams</h1>
+
+        <p class="mt-5">
+            <img class="textual-logo" src="{{ .Site.Params.textualname }}" alt="Responsive image">
+            <span>is currently in the process building a platform of cloud based tools for teams to help them become more productive, collaborative and fast!</span>
+        </p>
+
+        <strong>Wanna see what's cooking?</strong>
+
+        {{ with .Site.Params.Social.Github }}
+        <p>Have a look at our <a target="_blank" href="https://github.com/{{ . }}"><code>Github Repo</code></a></p>
+        {{ end }}
+
+        {{ .Content }}
+        {{ partial "social.html" . }}
+    </div>
+</section>
+{{ end }}

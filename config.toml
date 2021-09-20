@@ -1,0 +1,36 @@
+baseURL = "https://archeun.github.io"
+languageCode = "en-us"
+title = "archeun blog"
+theme = "hugo-sustain"
+publishdir = "docs"
+
+disqusShortname = ""
+googleAnalytics = ""
+
+[permalinks]
+post = "/:year/:month/:day/:slug"
+
+[params]
+avatar = "img/archeun-logo.svg"
+textualname = "img/textual-name.svg"
+author = "archeun"
+description = "Productivity app suite for teams"
+
+custom_css = []
+custom_js  = []
+
+[params.social]
+Github        = "archeun"
+Email         = "arunautebel@gmail.com"
+Twitter       = "archeunsoftware"
+LinkedIn      = "arunatebel"
+Stackoverflow = "users/3286603/aruna-tebel"
+RSS           = "/blog/index.xml"
+
+## Main Menu
+[[menu.main]]
+name = "blog"
+weight = 100
+identifier = "blog"
+url = "/blog/"
+
