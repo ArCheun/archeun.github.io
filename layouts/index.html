@@ -12,13 +12,14 @@
 
         <p class="mt-5">
             <img class="textual-logo" src="{{ .Site.Params.textualname }}" alt="Responsive image">
-            <span>is currently in the process building a platform of cloud based tools for teams to help them become more productive, collaborative and fast!</span>
+            <span>is currently in the process building a platform of cloud based tools for teams to help them become more
+                <strong class="text-arch-teal">productive</strong>, <strong class="text-arch-red">collaborative</strong> and <strong class="text-arch-teal-dark">fast!</strong></span>
         </p>
 
         <strong>Wanna see what's cooking?</strong>
 
         {{ with .Site.Params.Social.Github }}
-        <p>Have a look at our <a target="_blank" href="https://github.com/{{ . }}"><code>Github Repo</code></a></p>
+        <p>Have a look at our <a target="_blank" href="https://github.com/{{ . }}"><code>Github Repos</code></a></p>
         {{ end }}
 
         {{ .Content }}
