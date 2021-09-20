@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="archeun">
+    <link rel="shortcut icon" type="image/x-icon" href="https://archeun.github.ioimg/favicon.ico">
+    <title>JavaScript Inheritance - Part 1 | archeun blog</title>
+    <meta name="description" content="Learning Outcomes In this post, we will find out why JavaScript inheritance looks different compared to other programming languages. We will cover the below topics.
+ How do other programming languages model inheritance? Introduction to inheritance in Javascript  Why inheritance in JavaScript is confusing While JavaScript has gained huge popularity over the past decade, developers still struggle on understanding how it models inheritance. This is due to the unconventional way that JavaScript approaches this OOP concept.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    
+    <link rel="preload stylesheet" href="/css/main.min.css" as="style">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old">
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+  </head>
+  <body>
+    <div id="content">
+  
+  <div class="container mb-3">
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="https://archeun.github.io">
+        <i class="fa fa-home"></i>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar">
+        <i class="fa fa-bars"></i>
+      </button>
+
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          
+            
+              <li class="nav-item">
+                <li><a class="nav-link" href="/blog/">BLOG</a></li>
+              </li>
+            
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+  <div class="container">
+    <h3 class="mt-3"><b><a href="https://archeun.github.io/blog/javascript-inheritance-part-1/">JavaScript Inheritance - Part 1</a></b></h3>
+    <div class="blog-title my-4">
+      <h6>
+        August 28, 2021
+        &nbsp;&nbsp;
+        
+      </h6>
+    </div>
+    <div class="panel">
+      <div class="panel-body">
+        <div class="blogpost">
+          <h3 id="learning-outcomes">Learning Outcomes</h3>
+<p>In this post, we will find out why JavaScript inheritance looks different compared to other programming languages. We will cover the below topics.</p>
+<ul>
+<li>How do other programming languages model inheritance?</li>
+<li>Introduction to inheritance in Javascript</li>
+</ul>
+<h3 id="why-inheritance-in-javascript-is-confusing">Why inheritance in JavaScript is confusing</h3>
+<p>While JavaScript has gained huge popularity over the past decade, developers still struggle on understanding how it models <em>inheritance</em>. This is due to the unconventional way that JavaScript approaches this OOP concept.</p>
+<p>Let&rsquo;s see <em>why</em>, by starting from the basics.</p>
+<p>In simpler terms, we say that a language supports OOP if it implements the below principles.</p>
+<ul>
+<li>Polymorphism</li>
+<li>Inheritance</li>
+<li>Encapsulation</li>
+<li>Abstraction</li>
+</ul>
+<p><em>I will not dig into the details, since I assume that you already have a basic understanding of the above topics (CS 101 ;))</em></p>
+<p>In most programming languages, the above OOP principles are supported by exposing a <code>class</code> (or a similar) construct and a few related keywords like <code>new</code>, <code>extends</code>, and <code>implements</code> etc. The developers then have a properly defined way of structuring their class hierarchy, along with the other OOP principles mentioned above.</p>
+<p>For eg: one would model inheritance in python like below. This classic example shows how the Bird inherits some properties and functionality from the Animal while implementing its own properties and functionality.</p>
+<p>Get a bit familiar with the below simple code. We will use this snippet in the latter part of this article to see how we can achieve inheritance with JavaScript.</p>
+<p>I used python here since the syntax of it goes closely to pseudocode so that everyone will understand the concepts without struggling.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Animal</span>:
+    noOfEyes <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+    noOfLegs <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">makeSound</span>(self):
+        <span style="color:#66d9ef">pass</span>
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Bird</span>(Animal): <span style="color:#75715e"># Bird extends from Animal</span>
+    pos <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> <span style="color:#75715e"># Bird has an additional attribute</span>
+    noOfLegs <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#75715e"># Bird modifies it&#39;s parents attributes</span>
+
+    <span style="color:#75715e"># Bird extends functionality that is there in the Animal</span>
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">makeSound</span>(self):
+        print(<span style="color:#e6db74">&#39;tweet tweet!&#39;</span>)
+
+    <span style="color:#75715e"># Bird implements new functionality that is not there in the Animal</span>
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fly</span>(self, to): 
+        self<span style="color:#f92672">.</span>pos <span style="color:#f92672">=</span> to
+
+bird <span style="color:#f92672">=</span> Bird()
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;The bird has </span><span style="color:#e6db74">{</span>bird<span style="color:#f92672">.</span>noOfEyes<span style="color:#e6db74">}</span><span style="color:#e6db74"> eyes&#34;</span>) <span style="color:#75715e"># The bird has 2 eyes</span>
+bird<span style="color:#f92672">.</span>makeSound() <span style="color:#75715e"># tweet tweet!</span>
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Bird was initially at </span><span style="color:#e6db74">{</span>bird<span style="color:#f92672">.</span>pos<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>) <span style="color:#75715e"># Bird was initially at 0</span>
+bird<span style="color:#f92672">.</span>fly(<span style="color:#ae81ff">42</span>) <span style="color:#75715e"># bird.pos = 42</span>
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Bird flew to </span><span style="color:#e6db74">{</span>bird<span style="color:#f92672">.</span>pos<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>) <span style="color:#75715e"># Bird flew to 42</span>
+</code></pre></div><p>As seen above, the language syntax, keywords, and constructs make it easy and straightforward to model inheritance in almost all of the languages compared to JavaScript. But in JavaScript, there is no concept called <em>Classes</em>. Even though ES2015 introduced the <code>class</code> keyword, it is just syntactic sugar to the ordinary way of how the language models inheritance under the hood. So what exactly does JavaScript offer us to implement inheritance?</p>
+<h3 id="prototypal-inheritance">Prototypal inheritance</h3>
+<p>JavaScript introduces the concepts called <em>prototypes</em>, and <em>prototype chaining</em> to facilitate inheritance.</p>
+<blockquote>
+</blockquote>
+<p>While other programming languages have class-based inheritance, Javascript has a prototype-based inheritance.</p>
+<p>There are a few words/terms related to this concept that sound identical but differ drastically. This is the reason that developers find it hard to grasp this concept. Let&rsquo;s see what this means.</p>
+<p>In order to achieve inheritance,</p>
+<ul>
+<li>a parent-child (or superclass-subclass) relationship should be defined</li>
+<li>child <em>may</em> inherit some properties and functionality from its parent</li>
+<li>child <em>may</em> override/modify its parents' properties and functionality</li>
+<li>child <em>may</em> contain specific properties and functionality of its own</li>
+</ul>
+<p>We saw above, how other programming languages achieve the above capabilities. Now we will see how JavaScript tries to achieve the same.</p>
+<p>In JavaScript, almost everything is an Object. The only exceptions are the primitives. Compared to other programming languages, we do not need to define a blueprint (<code>class</code>) first and then create object instances out of it in JavaScript.</p>
+<p>But, there are two ways to create an object in JavaScript. Let&rsquo;s find out those two ways and how we can use inheritance in both of these cases.</p>
+<h3 id="creating-objects-with--notation">Creating objects with <code>{...}</code> notation</h3>
+<p>One (and the most familiar) way of creating an object in JavaScript is the one below. I will align the code with our Animal-Bird example so that we can clearly see how this evolves.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Animal</span> <span style="color:#f92672">=</span> {
+  <span style="color:#a6e22e">noOfEyes</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>,
+  <span style="color:#a6e22e">noOfLegs</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">4</span>,
+
+  <span style="color:#a6e22e">makeSound</span>() {
+    <span style="color:#75715e">// do make sound
+</span><span style="color:#75715e"></span>  },
+};
+</code></pre></div><p>Similarly, we can create the Bird object including only the properties and functionality that are specific to the Bird, like below.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Bird</span> <span style="color:#f92672">=</span> {
+  <span style="color:#a6e22e">noOfLegs</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>,
+  <span style="color:#a6e22e">pos</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>,
+
+  <span style="color:#a6e22e">makeSound</span>() {
+    <span style="color:#a6e22e">alert</span>(<span style="color:#e6db74">&#39;tweet tweet!&#39;</span>);
+  },
+
+  <span style="color:#a6e22e">fly</span>(<span style="color:#a6e22e">to</span>) {
+    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">pos</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">to</span>;
+  },
+};
+</code></pre></div><p>Great, but we should now inherit the properties and functionality from the Animal object into the Bird. We do not have any special keyword like <code>extends</code> to be used in this simple object creation syntax. Then how do we do it?</p>
+<p>This is where JavaScript offers us the <code>Object.setPrototypeOf()</code> (or <code>__proto__</code> (deprecated but widely used)). Let&rsquo;s first use the widely used <code>__proto__</code> approach.</p>
+<p>In order to tell JavaScript that our Bird object inherits from the Animal object, we have to do the below modification to the Bird object.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">Bird</span>.<span style="color:#ae81ff">__</span><span style="color:#a6e22e">proto__</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Animal</span>; <span style="color:#75715e">// Bird should inherit from the Animal
+</span></code></pre></div><p>What this basically tells is that the Bird object has the <code>prototype</code> of an Animal. In other words, the Bird object will inherit the properties and functionality of the Animal object.</p>
+<blockquote>
+<p>Following the ECMAScript standard, the notation <code>someObject.[[Prototype]]</code> is used to designate the prototype of <code>someObject</code>. Therefore, from this point onward the notation <code>someObject.[[Prototype]]</code> will be used to mean that the <code>someObject</code> has the prototype of another object. This is to reduce the confusion between the actual <code>prototype</code> attribute of JavaScript functions which will be introduced in a subsequent post.</p>
+</blockquote>
+<p>Now, we can see the magic in action.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// We create the Animal object
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Animal</span> <span style="color:#f92672">=</span> {
+  <span style="color:#a6e22e">noOfEyes</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>,
+  <span style="color:#a6e22e">noOfLegs</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">4</span>,
+
+  <span style="color:#a6e22e">makeSound</span>() {
+    <span style="color:#75715e">// do make sound
+</span><span style="color:#75715e"></span>  },
+};
+
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * We create the Bird object. But still we have not specified that
+</span><span style="color:#75715e"> * the Bird inherits from the Animal
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Bird</span> <span style="color:#f92672">=</span> {
+  <span style="color:#a6e22e">noOfLegs</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>,
+  <span style="color:#a6e22e">pos</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>,
+
+  <span style="color:#a6e22e">makeSound</span>() {
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;tweet tweet!&#39;</span>);
+  },
+
+  <span style="color:#a6e22e">fly</span>(<span style="color:#a6e22e">to</span>) {
+    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">pos</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">to</span>;
+  },
+};
+
+<span style="color:#75715e">// At this point, noOfEyes in not a property of the Bird.
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">Bird</span>.<span style="color:#a6e22e">noOfEyes</span>); <span style="color:#75715e">// undefined
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * We tell JavaScript that the Bird should inherit from the Animal.
+</span><span style="color:#75715e"> * JavaScript will do its &#39;magic&#39; and do the necessary linking.
+</span><span style="color:#75715e"> */</span>
+<span style="color:#a6e22e">Bird</span>.<span style="color:#ae81ff">__</span><span style="color:#a6e22e">proto__</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Animal</span>;
+
+<span style="color:#75715e">// Now the Bird has derived access to the noOfEyes property from the Animal
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">Bird</span>.<span style="color:#a6e22e">noOfEyes</span>); <span style="color:#75715e">// 2
+</span></code></pre></div><p>Perfect!, we achieved the same functionality we had in our python script above. But we have a minor issue using the non-standard <code>__proto__</code> attribute, and let&rsquo;s address it now.</p>
+<p>The <code>__proto__</code> is considered non-standard now, according to the  <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto">MDN docs</a> ,</p>
+<blockquote>
+</blockquote>
+<p>Deprecated: This feature is no longer recommended. Though some browsers might still support it, it may have already been removed from the relevant web standards, maybe in the process of being dropped, or may only be kept for compatibility purposes. Avoid using it, and update existing code if possible; see the compatibility table at the bottom of this page to guide your decision. Be aware that this feature may cease to work at any time.</p>
+<p>The recommended way is to use the <code>Object.setPrototypeOf()</code> call. We are almost there. Only a minor change is necessary as below.</p>
+<p>Instead of,</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">Bird</span>.<span style="color:#ae81ff">__</span><span style="color:#a6e22e">proto__</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Animal</span>;
+</code></pre></div><p>We should now use,</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">Object.<span style="color:#a6e22e">setPrototypeOf</span>(<span style="color:#a6e22e">Bird</span>, <span style="color:#a6e22e">Animal</span>);
+</code></pre></div><p>The complete example will look like below now.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// We create the Animal object
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Animal</span> <span style="color:#f92672">=</span> {
+  <span style="color:#a6e22e">noOfEyes</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>,
+  <span style="color:#a6e22e">noOfLegs</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">4</span>,
+
+  <span style="color:#a6e22e">makeSound</span>() {
+    <span style="color:#75715e">// do make sound
+</span><span style="color:#75715e"></span>  },
+};
+
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * We create the Bird object. But still we have not specified that
+</span><span style="color:#75715e"> * the Bird inherits from the Animal
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Bird</span> <span style="color:#f92672">=</span> {
+  <span style="color:#a6e22e">noOfLegs</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>,
+  <span style="color:#a6e22e">pos</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>,
+
+  <span style="color:#a6e22e">makeSound</span>() {
+    <span style="color:#a6e22e">alert</span>(<span style="color:#e6db74">&#39;tweet tweet!&#39;</span>);
+  },
+
+  <span style="color:#a6e22e">fly</span>(<span style="color:#a6e22e">to</span>) {
+    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">pos</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">to</span>;
+  },
+};
+
+<span style="color:#75715e">// At this point, noOfEyes in not a property of the Bird.
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">Bird</span>.<span style="color:#a6e22e">noOfEyes</span>); <span style="color:#75715e">// undefined
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * We tell JavaScript that the Bird should inherit from the Animal.
+</span><span style="color:#75715e"> * JavaScript will do its &#39;magic&#39; and do the necessary linking.
+</span><span style="color:#75715e"> */</span>
+Object.<span style="color:#a6e22e">setPrototypeOf</span>(<span style="color:#a6e22e">Bird</span>, <span style="color:#a6e22e">Animal</span>);
+
+<span style="color:#75715e">// Now the Bird has derived access to the noOfEyes property from the Animal
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">Bird</span>.<span style="color:#a6e22e">noOfEyes</span>); <span style="color:#75715e">// 2
+</span></code></pre></div><p>Cool!</p>
+<p>You might be wondering now whether the Animal object inherits from anything. Or in other words, whether it has a <code>[[Prototype]]</code> of any parent object. The answer is yes! Any object in JavaScript has the <code>[[Prototype]]</code> of the <code>Object.prototype</code> (we will dig deep into <code>Object.prototype</code> in the next post of this series) unless it has a user-defined prototype. In addition, the <code>[[Prototype]]</code> of the <code>Object.prototype</code> will be <code>null</code>, eventually stopping the prototype chain.</p>
+<p>Due to this chaining, whenever an attribute is accessed or a method is called upon an object, JavaScript will keep looking for the particular attribute or the method in the entire prototype chain gradually, until it finds the <code>[[Prototype]]</code> of the <code>Object.prototype</code> which will be <code>null</code>. This is called the <strong>prototype chaining</strong>.</p>
+<p>Let&rsquo;s look at how this works using our code example by introducing another object to the chain called, Parrot.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// We create the Animal object
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Animal</span> <span style="color:#f92672">=</span> {
+  <span style="color:#a6e22e">noOfEyes</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>,
+  <span style="color:#a6e22e">noOfLegs</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">4</span>,
+
+  <span style="color:#a6e22e">makeSound</span>() {
+    <span style="color:#75715e">// do make sound
+</span><span style="color:#75715e"></span>  },
+};
+
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * We create the Bird object. But still we have not specified that
+</span><span style="color:#75715e"> * the Bird inherits from the Animal
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Bird</span> <span style="color:#f92672">=</span> {
+  <span style="color:#a6e22e">noOfLegs</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>,
+  <span style="color:#a6e22e">pos</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>,
+
+  <span style="color:#a6e22e">makeSound</span>() {
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;tweet tweet!&#39;</span>);
+  },
+
+  <span style="color:#a6e22e">fly</span>(<span style="color:#a6e22e">to</span>) {
+    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">pos</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">to</span>;
+  },
+};
+
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * We create the Bird object. But still we have not specified that
+</span><span style="color:#75715e"> * the Bird inherits from the Animal
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Parrot</span> <span style="color:#f92672">=</span> {
+
+  <span style="color:#a6e22e">makeSound</span>() {
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;creek creek!&#39;</span>);
+  },
+
+};
+
+<span style="color:#75715e">// Bird inherits from Animal
+</span><span style="color:#75715e"></span>Object.<span style="color:#a6e22e">setPrototypeOf</span>(<span style="color:#a6e22e">Bird</span>, <span style="color:#a6e22e">Animal</span>);
+
+<span style="color:#75715e">// Parrot inherits from Bird
+</span><span style="color:#75715e"></span>Object.<span style="color:#a6e22e">setPrototypeOf</span>(<span style="color:#a6e22e">Parrot</span>, <span style="color:#a6e22e">Bird</span>);
+
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * Parrot has it&#39;s own version of the makeSound implementation. Execute it!
+</span><span style="color:#75715e"> * Same applies to properties too.
+</span><span style="color:#75715e"> */</span>
+<span style="color:#a6e22e">Parrot</span>.<span style="color:#a6e22e">makeSound</span>(); <span style="color:#75715e">// creek creek!
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * Parrot does not have it&#39;s own value for the noOfLegs.
+</span><span style="color:#75715e"> * JavaScript will climb up in the prototype chain looking for this property.
+</span><span style="color:#75715e"> * Parrot has the prototype of the Bird and JavaScript sees noOfLegs inside the Bird.
+</span><span style="color:#75715e"> * So, the Bird&#39;s noOfLegs value will be used here.
+</span><span style="color:#75715e"> */</span>
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">Parrot</span>.<span style="color:#a6e22e">noOfLegs</span>); <span style="color:#75715e">// 2
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * Parrot does not have it&#39;s own value for the noOfEyes.
+</span><span style="color:#75715e"> * JavaScript will climb up in the prototype chain looking for this property.
+</span><span style="color:#75715e"> * Parrot has the prototype of the Bird, but JavaScript doesn&#39;t see noOfEyes inside the Bird either.
+</span><span style="color:#75715e"> * It does not stop their and climb up further in the prototype chain.
+</span><span style="color:#75715e"> * Bird has the prototype of the Animal and JavaScript sees noOfEyes inside the Animal.
+</span><span style="color:#75715e"> * So, the Animal&#39;s noOfEyes value will be used here.
+</span><span style="color:#75715e"> */</span>
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">Parrot</span>.<span style="color:#a6e22e">noOfEyes</span>); <span style="color:#75715e">// 2
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * Parrot does not have it&#39;s own value for the hairColor.
+</span><span style="color:#75715e"> * JavaScript will climb up in the prototype chain looking for this property.
+</span><span style="color:#75715e"> * Parrot has the prototype of the Bird,
+</span><span style="color:#75715e"> *      but JavaScript doesn&#39;t see hairColor inside the Bird either.
+</span><span style="color:#75715e"> * It does not stop their and climb up further in the prototype chain.
+</span><span style="color:#75715e"> * Bird has the prototype of the Animal,
+</span><span style="color:#75715e"> *      but JavaScript doesn&#39;t see hairColor inside the Animal either.
+</span><span style="color:#75715e"> * Animal has the prototype of the Object.prototype,
+</span><span style="color:#75715e"> *      but JavaScript doesn&#39;t see hairColor inside the Object.prototype either.
+</span><span style="color:#75715e"> * Object.prototype has null as the prototype,
+</span><span style="color:#75715e"> *      so Javascript will stop looking further
+</span><span style="color:#75715e"> * So, hairColor will be undefined here
+</span><span style="color:#75715e"> */</span>
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">Parrot</span>.<span style="color:#a6e22e">hairColor</span>); <span style="color:#75715e">// 2
+</span></code></pre></div><p>This is how prototypes and prototype chaining basically work in JavaScript.</p>
+<p>We looked at the easy way of creating objects (<code>{...}</code> notation) and that also made it easy for us to understand the inheritance. But we have a few other concepts to talk about before concluding inheritance, objects, and prototypes.</p>
+<p>The other way of creating objects in JavaScript is using the <code>new</code> keyword along with constructor functions (or else the built-in <code>Object.create</code> static method). Even though the concept is the same, it requires a bit more understanding of some characteristics of JavaScript in order to fully understand how inheritance works when objects are created in that way.</p>
+<p>We have to discuss concepts like,</p>
+<ul>
+<li>The <code>new</code> keyword and constructor functions</li>
+<li><code>prototype</code> property of functions</li>
+<li>What is the difference between <code>__proto__</code> or (<code>[[Prototype]]</code>) and <code>prototype</code> in functions</li>
+</ul>
+<p>I think those topics will fit well into a separate article. Therefore, let&rsquo;s discuss them in my next blog post in this series. If you have any feedback please let me know in the comments section. :)</p>
+<p>Thank you.</p>
+
+          
+          
+        </div>
+      </div>
+      <div class="disqus">
+        
+      </div>
+    </div>
+  </div>
+
+    </div>
+    
+    <footer class="footer">
+  <div class="container">
+    <div class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+    <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
+
+  </body>
+</html>
