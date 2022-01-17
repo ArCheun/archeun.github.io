@@ -135,7 +135,7 @@ print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;Bird flew
 </code></pre></div><p>Great, but we should now inherit the properties and functionality from the Animal object into the Bird. We do not have any special keyword like <code>extends</code> to be used in this simple object creation syntax. Then how do we do it?</p>
 <p>This is where JavaScript offers us the <code>Object.setPrototypeOf()</code> (or <code>__proto__</code> (deprecated but widely used)). Let&rsquo;s first use the widely used <code>__proto__</code> approach.</p>
 <p>In order to tell JavaScript that our Bird object inherits from the Animal object, we have to do the below modification to the Bird object.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#a6e22e>Bird</span>.<span style=color:#ae81ff>__</span><span style=color:#a6e22e>proto__</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>Animal</span>; <span style=color:#75715e>// Bird should inherit from the Animal
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#a6e22e>Bird</span>.<span style=color:#a6e22e>__proto__</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>Animal</span>; <span style=color:#75715e>// Bird should inherit from the Animal
 </span></code></pre></div><p>What this basically tells is that the Bird object has the <code>prototype</code> of an Animal. In other words, the Bird object will inherit the properties and functionality of the Animal object.</p>
 <blockquote>
 <p>Following the ECMAScript standard, the notation <code>someObject.[[Prototype]]</code> is used to designate the prototype of <code>someObject</code>. Therefore, from this point onward the notation <code>someObject.[[Prototype]]</code> will be used to mean that the <code>someObject</code> has the prototype of another object. This is to reduce the confusion between the actual <code>prototype</code> attribute of JavaScript functions which will be introduced in a subsequent post.</p>
@@ -175,7 +175,7 @@ print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;Bird flew
 </span><span style=color:#75715e> * We tell JavaScript that the Bird should inherit from the Animal.
 </span><span style=color:#75715e> * JavaScript will do its &#39;magic&#39; and do the necessary linking.
 </span><span style=color:#75715e> */</span>
-<span style=color:#a6e22e>Bird</span>.<span style=color:#ae81ff>__</span><span style=color:#a6e22e>proto__</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>Animal</span>;
+<span style=color:#a6e22e>Bird</span>.<span style=color:#a6e22e>__proto__</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>Animal</span>;
 
 <span style=color:#75715e>// Now the Bird has derived access to the noOfEyes property from the Animal
 </span><span style=color:#75715e></span><span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#a6e22e>Bird</span>.<span style=color:#a6e22e>noOfEyes</span>); <span style=color:#75715e>// 2
@@ -186,7 +186,7 @@ print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;Bird flew
 <p>Deprecated: This feature is no longer recommended. Though some browsers might still support it, it may have already been removed from the relevant web standards, maybe in the process of being dropped, or may only be kept for compatibility purposes. Avoid using it, and update existing code if possible; see the compatibility table at the bottom of this page to guide your decision. Be aware that this feature may cease to work at any time.</p>
 <p>The recommended way is to use the <code>Object.setPrototypeOf()</code> call. We are almost there. Only a minor change is necessary as below.</p>
 <p>Instead of,</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#a6e22e>Bird</span>.<span style=color:#ae81ff>__</span><span style=color:#a6e22e>proto__</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>Animal</span>;
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#a6e22e>Bird</span>.<span style=color:#a6e22e>__proto__</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>Animal</span>;
 </code></pre></div><p>We should now use,</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript>Object.<span style=color:#a6e22e>setPrototypeOf</span>(<span style=color:#a6e22e>Bird</span>, <span style=color:#a6e22e>Animal</span>);
 </code></pre></div><p>The complete example will look like below now.</p>
